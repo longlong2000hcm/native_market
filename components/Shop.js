@@ -69,7 +69,7 @@ export default class Shop extends Component {
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ searchBy: itemValue })
                         }>
-                        <Picker.Item label="" value="" />
+                        <Picker.Item label="by" value="" />
                         <Picker.Item label="Category" value="category" />
                         <Picker.Item label="Location" value="location" />
                         <Picker.Item label="Date" value="date" />
