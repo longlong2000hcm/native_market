@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Text, View, Button, ScrollView, Picker } from 'react-native'
+import { Text, View, Button, ScrollView, Picker, TouchableOpacity } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
+import * as ImagePicker from 'expo-image-picker'
 
 export default class CreatePosting extends Component {
     constructor(props) {
@@ -18,8 +19,39 @@ export default class CreatePosting extends Component {
         }
     }
 
+    openImagePickerAsync = async () => {
+        let permissionResult = true;//await ImagePicker.requestCameraRollPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("Permission to access camera roll is required!");
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        console.log(pickerResult);
+
+        if (pickerResult.cancelled == true) {
+            alert('Image picker cancelled or failed');
+            return;
+        }
+
+        const fileNameSplit = pickerResult.uri.split('/');
+        const fileName = fileNameSplit[fileNameSplit.length - 1];
+
+        let postForm = new FormData();
+        postForm.append('myFiles', {
+            uri: pickerResult.uri,
+            name: fileName,
+            type: 'image/jpeg'
+        });
+        postForm.append('foo', 'bar');
+
+        console.log(postForm);
+
+    }
+
     inputHandler = (text, name) => {
-        this.setState({[name]: text})
+        this.setState({ [name]: text })
     }
 
     submitHandler = () => {
@@ -31,7 +63,9 @@ export default class CreatePosting extends Component {
             <View style={{ flex: 1, alignItems: 'center', marginTop: "10%" }}>
 
                 <View style={{ flex: 0, flexDirection: "row-reverse", marginTop: 10 }}>
-                    <View style={{ flex: 7, alignItems: "center", justifyContent: "center" }}></View>
+                    <View style={{ flex: 7, alignItems: "center", justifyContent: "center" }}>
+                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Create Posting</Text>
+                    </View>
                     <View style={{ flex: 3, height: "100%", paddingHorizontal: 20 }}>
                         <Button
                             title="Back"
@@ -94,6 +128,15 @@ export default class CreatePosting extends Component {
                             }} />
                     </View>
 
+                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 5, marginHorizontal: 5 }}>
+                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Images</Text>
+                        <View style={{ flex: 7, justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity onPress={this.openImagePickerAsync} style={{ borderWidth: 1, borderColor: 'black' }}>
+                                <Text style={{ padding: 5 }}>Pick a photo</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
                     <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
                         <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Price</Text>
                         <TextInput
@@ -122,6 +165,8 @@ export default class CreatePosting extends Component {
                         </Picker>
                     </View>
 
+
+
                     <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
                         <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Seller info</Text>
                         <TextInput
@@ -134,7 +179,7 @@ export default class CreatePosting extends Component {
                                 flex: 7, height: 40, borderColor: 'gray',
                                 borderWidth: 1, width: "100%", backgroundColor: "white",
                                 paddingHorizontal: "5%",
-                                height:100
+                                height: 100
                             }} />
                     </View>
 
