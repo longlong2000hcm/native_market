@@ -9,10 +9,11 @@ const LoginScreen = (props) => {
   const [password, setPassword] = useState("testerpassword");
 
   function loginClick() {
+    
     fetch(props.apiURI + '/loginForJWT', {
-      method: 'GET',
+      method: 'POST',
       headers: {
-        "Authorization": "Basic " + Base64.encode(userName + ":" + password)
+        "Content-Type": "multipart/form-data"
       }
     })
     .then(response => {

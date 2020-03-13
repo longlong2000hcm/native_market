@@ -12,14 +12,14 @@ import Postings from './myPostingsComponents/Postings'
 import CreatePosting from './myPostingsComponents/CreatePosting'
 
 const Stack = createStackNavigator();
-const secureStoreTokenName = "demoAppJWT2";
+const secureStoreTokenName = "NativeMarket";
 
 export default class AuthDemo extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            apiURI: "http://130.231.3.154:3000",
+            apiURI: this.props.apiURI,
             isCheckingTokenStorage: true,
             activeJWT: null
         };

@@ -1,26 +1,22 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Button, TextInput, TouchableHighlight } from 'react-native'
-import axios from 'axios';
 
 const SignUpScreen = (props) => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
 
-  function signupPressed()
-  {
-    fetch(props.apiURI + '/registerBasic', {
-        method: 'POST',
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      })
+  const signupPressed = async () => {
+    let form = new FormData();
+    form.append("username", username);
+    form.append("password", password);
+    fetch(props.apiURI + '/register', {
+      method: 'POST',
+      body: form,
+      headers: {
+        "Content-type": "multipart/form-data"
+      }
+    })
       .then(response => {
         if (response.ok == false) {
           throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
@@ -28,6 +24,7 @@ const SignUpScreen = (props) => {
         return response.json();
       })
       .then(json => {
+        console.log(json)
         props.navigation.reset({
           index: 0,
           routes: [{ name: 'SignupCompleted' }],
@@ -41,32 +38,25 @@ const SignUpScreen = (props) => {
   }
 
   return (
-    <View style={ styles.screen }>
-      <Text style={ styles.header }>Sign Up</Text>
+    <View style={styles.screen}>
+      <Text style={styles.header}>Sign Up</Text>
       <Text>Please enter your username</Text>
       <TextInput
-        style={ styles.input }
-        value={ username }
+        style={styles.input}
+        value={username}
         placeholder="johndoe"
-        onChangeText={ value => setUsername(value)}
-      />
-      <Text>Please enter your email</Text>
-      <TextInput
-        style={ styles.input }
-        value={ email }
-        placeholder="test@email.com"
-        onChangeText={ value => setEmail(value)}
+        onChangeText={value => setUsername(value)}
       />
       <Text>Please enter your password</Text>
       <TextInput
-        style={ styles.input }
-        value={ password }
+        style={styles.input}
+        value={password}
         placeholder="password"
-        onChangeText={ value => setPassword(value)}
+        onChangeText={value => setPassword(value)}
       />
-      <TouchableHighlight onPress={ () => signupPressed() }>
-        <View style={ styles.primaryButton }>
-          <Text style={ styles.primaryButtonText }>Sign up</Text>
+      <TouchableHighlight onPress={() => signupPressed()}>
+        <View style={styles.primaryButton}>
+          <Text style={styles.primaryButtonText}>Sign up</Text>
         </View>
       </TouchableHighlight>
       <Button
