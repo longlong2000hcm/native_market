@@ -17,15 +17,17 @@ const SignUpCompleted = (props) => {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: 'rgb(227, 178, 0)',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
   header: {
-    fontSize: 40,
+    fontSize: 30,
     marginBottom: 20,
-    color: 'white'
+    textAlign: "center",
+    textAlignVertical: "center",
+    color: 'black'
   },
   text: {
     fontSize: 20,

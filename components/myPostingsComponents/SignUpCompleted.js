@@ -6,8 +6,8 @@ const SignUpCompleted = (props) => {
 
   return (
     <View style={ styles.screen }>
-      <Text style={ styles.header }>Sign up completed</Text>
-      <Button title="Proceed to login" onPress={ () => props.navigation.reset({
+      <Text style={ styles.header }>Registering complete</Text>
+      <Button title="Login" onPress={ () => props.navigation.reset({
           index: 0,
           routes: [{ name: 'Login' }],
         })}></Button>
@@ -17,15 +17,17 @@ const SignUpCompleted = (props) => {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: 'rgb(227, 178, 0)',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
   header: {
-    fontSize: 40,
+    fontSize: 30,
     marginBottom: 20,
-    color: 'white'
+    textAlign: "center",
+    textAlignVertical: "center",
+    color: 'black'
   },
   text: {
     fontSize: 20,

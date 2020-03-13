@@ -43,7 +43,7 @@ const LoginScreen = (props) => {
 
   return (
     <View style={ styles.screen }>
-      <Text style={ styles.header }>User Login</Text>
+      <Text style={ styles.header }>Login</Text>
       <Text style={ styles.text }>Username</Text>
       <TextInput
         style={ styles.input }
@@ -55,6 +55,7 @@ const LoginScreen = (props) => {
       <TextInput
         style={ styles.input }
         value={ password }
+        secureTextEntry={true}
         placeholder="password"
         onChangeText={ value => setPassword(value)}
       />
@@ -63,14 +64,14 @@ const LoginScreen = (props) => {
           <Text style={ styles.primaryButtonText }>Login</Text>
         </View>
       </TouchableHighlight>
-      <Button title="Sign up" color="#000000" onPress={ () => props.navigation.navigate('Signup') } />
+      <Button title="Sign up" color="rgb(0, 222, 26)" onPress={ () => props.navigation.navigate('Signup') } />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: 'rgb(51, 153, 255)',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 40,
     marginBottom: 20,
-    color: 'white'
+    color: 'black'
   },
   text: {
     fontSize: 20,
@@ -86,7 +87,8 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 3,
+    borderColor: "gray",
     height: 40,
     width: '90%',
     backgroundColor: 'white',
@@ -96,19 +98,18 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   primaryButton: {
-    backgroundColor: 'rgb(0, 153, 51)',
+    backgroundColor: 'rgb(0, 149, 255)',
+    borderRadius: 5,
     height: 60,
     width: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 2,
     marginTop: 20,
     marginBottom: 10
   },
   primaryButtonText: {
     color: 'white',
-    fontSize: 20
+    fontSize: 20,
 
   }
 });

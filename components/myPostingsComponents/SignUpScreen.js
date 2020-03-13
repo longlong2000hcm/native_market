@@ -39,29 +39,30 @@ const SignUpScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <Text style={styles.header}>Sign Up</Text>
-      <Text>Please enter your username</Text>
+      <Text style={styles.header}>Register</Text>
+      <Text>Username</Text>
       <TextInput
         style={styles.input}
         value={username}
         placeholder="username"
         onChangeText={value => setUsername(value)}
       />
-      <Text>Please enter your password</Text>
+      <Text>Password</Text>
       <TextInput
         style={styles.input}
         value={password}
+        secureTextEntry={true}
         placeholder="password"
         onChangeText={value => setPassword(value)}
       />
       <TouchableHighlight onPress={() => signupPressed()}>
         <View style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Sign up</Text>
+          <Text style={styles.primaryButtonText}>Register</Text>
         </View>
       </TouchableHighlight>
       <Button
         title="Cancel"
-        color="#000000"
+        color="gray"
         onPress={
           () => props.navigation.reset({
             index: 0,
@@ -74,7 +75,7 @@ const SignUpScreen = (props) => {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: 'rgb(227, 178, 0)',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 40,
     marginBottom: 20,
-    color: 'white'
+    color: 'black'
   },
   text: {
     fontSize: 20,
@@ -90,7 +91,8 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 3,
+    borderColor: "gray",
     height: 40,
     width: '90%',
     backgroundColor: 'white',
@@ -100,13 +102,12 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   primaryButton: {
-    backgroundColor: 'rgb(0, 153, 51)',
+    backgroundColor: 'rgb(0, 222, 26)',
     height: 60,
     width: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 2,
+    borderRadius: 5,
     marginTop: 20,
     marginBottom: 10
   },
