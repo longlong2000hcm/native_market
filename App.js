@@ -6,7 +6,6 @@ import { Entypo } from 'react-native-vector-icons';
 import Shop from './components/Shop'
 import MyPostings from './components/MyPostings'
 
-
 const Tab = createBottomTabNavigator();
 
 export default function App() {

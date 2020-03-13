@@ -19,9 +19,11 @@ export default class AuthDemo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            apiURI: this.props.apiURI,
+            apiURI: "http://87.92.86.121:3000",
             isCheckingTokenStorage: true,
-            activeJWT: null
+            activeJWT: null,
+            idUser: null,
+            username: null
         };
     }
 
@@ -39,12 +41,12 @@ export default class AuthDemo extends Component {
     }
 
 
-    onLoginReceiveJWT = (responseJWT) => {
+    onLoginReceiveJWT = (responseJWT, idUser, username) => {
         // Deal with successful login by storing the token into secure store
         SecureStore.setItemAsync(secureStoreTokenName, responseJWT)
             .then(response => {
                 console.log(response);
-                this.setState({ activeJWT: responseJWT, isCheckingTokenStorage: false })
+                this.setState({ activeJWT: responseJWT, isCheckingTokenStorage: false, idUser: idUser, username: username })
             })
     }
 
@@ -92,6 +94,8 @@ export default class AuthDemo extends Component {
                         jwt={this.state.activeJWT}
                         apiURI={this.state.apiURI}
                         onLogout={this.onLogout}
+                        idUser={this.state.idUser}
+                        username={this.state.username}
                     ></Postings>}
                 </Stack.Screen>
                 <Stack.Screen
@@ -104,6 +108,8 @@ export default class AuthDemo extends Component {
                         jwt={this.state.activeJWT}
                         apiURI={this.state.apiURI}
                         onLogout={this.onLogout}
+                        idUser={this.state.idUser}
+                        username={this.state.username}
                     ></CreatePosting>}
                 </Stack.Screen>
             </>

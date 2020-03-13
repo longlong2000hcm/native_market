@@ -38,7 +38,21 @@ export default class CreatePosting extends Component {
         const fileNameSplit = pickerResult.uri.split('/');
         const fileName = fileNameSplit[fileNameSplit.length - 1];
 
-        let postForm = new FormData();
+        let stateImages =  this.state.images;
+        if (stateImages.length>=4) {
+            alert("You can only select a maximum of 4 images!")
+        } else {
+            stateImages.push(
+                {
+                    uri: pickerResult.uri,
+                    name: fileName,
+                    type: 'image/jpeg'
+                }
+            )
+            this.setState({images: stateImages})
+        }
+
+        /* let postForm = new FormData();
         postForm.append('myFiles', {
             uri: pickerResult.uri,
             name: fileName,
@@ -46,7 +60,7 @@ export default class CreatePosting extends Component {
         });
         postForm.append('foo', 'bar');
 
-        console.log(postForm);
+        console.log(postForm); */
 
     }
 
@@ -55,7 +69,57 @@ export default class CreatePosting extends Component {
     }
 
     submitHandler = () => {
+        //Get date in format dd-mm-yyyy
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1;
+        let yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        today = dd+'-'+mm+'-'+yyyy;
+
         console.log(this.state)
+        let form = new FormData();
+        form.append("title", this.state.title);
+        form.append("description", this.state.description);
+        form.append("category", this.state.category);
+        form.append("location", this.state.location);
+        form.append("price", this.state.price);
+        form.append("dateOfPosting", today);
+        form.append("deliveryType", this.state.deliveryType);
+        form.append("sellerInfo", this.state.sellerInfo);
+        this.state.images.map(x=>{
+            form.append('images', x);
+        })
+        fetch(props.apiURI + '/products', {
+            method: 'POST',
+            body: form,
+            headers: {
+              "Content-type": "multipart/form-data",
+              "Authorization": "Bearer " + this.props.jwt
+            }
+          })
+            .then(response => {
+              if (response.ok == false) {
+                throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+              }
+              return response.json();
+            })
+            .then(json => {
+              console.log(json)
+              props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'SignupCompleted' }],
+              })
+            })
+            .catch(error => {
+              console.log("Error message:")
+              console.log(error.message)
+            });
     }
 
     render() {
@@ -130,7 +194,8 @@ export default class CreatePosting extends Component {
 
                     <View style={{ flex: 1, flexDirection: "row", marginVertical: 5, marginHorizontal: 5 }}>
                         <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Images</Text>
-                        <View style={{ flex: 7, justifyContent: "center", alignItems: "center" }}>
+                        <View style={{ flex: 7, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{marginRight: 10}}>({this.state.images.length})</Text>
                             <TouchableOpacity onPress={this.openImagePickerAsync} style={{ borderWidth: 1, borderColor: 'black' }}>
                                 <Text style={{ padding: 5 }}>Pick a photo</Text>
                             </TouchableOpacity>

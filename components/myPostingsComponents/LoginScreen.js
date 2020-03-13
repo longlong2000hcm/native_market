@@ -9,12 +9,15 @@ const LoginScreen = (props) => {
   const [password, setPassword] = useState("testerpassword");
 
   function loginClick() {
-    
-    fetch(props.apiURI + '/loginForJWT', {
+    let form = new FormData();
+    form.append("username", userName);
+    form.append("password", password);
+    fetch(props.apiURI + '/login', {
       method: 'POST',
       headers: {
         "Content-Type": "multipart/form-data"
-      }
+      },
+      body: form
     })
     .then(response => {
       if (response.ok == false) {
@@ -26,8 +29,7 @@ const LoginScreen = (props) => {
       console.log("Login successful")
       console.log("Received following JSON");
       console.log(json);
-
-      props.onLoginReceiveJWT(json.token);
+      props.onLoginReceiveJWT(json.token, idUser, username);
     })
     .catch(error => {
       console.log("Error message:")
