@@ -92,7 +92,10 @@ export default class Postings extends Component {
                             backgroundColor: "white",
                         }}>
                             <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", marginBottom: 5}}>
-                                <Button title="Edit" style={{flex: 1}}></Button>
+                                <Button title="Edit" 
+                                onPress={() => this.props.navigation.navigate('EditPosting', {...item})}
+                                style={{flex: 1}}
+                                />
                                 
                                 <Button title="Delete" style={{flex: 1}} ></Button>
                             </View>

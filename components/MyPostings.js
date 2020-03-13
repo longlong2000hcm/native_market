@@ -10,6 +10,8 @@ import * as SecureStore from 'expo-secure-store'
 import LoadingScreen from './myPostingsComponents/LoadingScreen'
 import Postings from './myPostingsComponents/Postings'
 import CreatePosting from './myPostingsComponents/CreatePosting'
+import EditPosting from './myPostingsComponents/EditPosting'
+import DeletePosting from './myPostingsComponents/DeletePosting'
 import ActionCompleted from './myPostingsComponents/ActionCompleted'
 
 const Stack = createStackNavigator();
@@ -119,6 +121,34 @@ export default class AuthDemo extends Component {
                         idUser={this.state.idUser}
                         username={this.state.username}
                     ></CreatePosting>}
+                </Stack.Screen>
+                <Stack.Screen
+                    name="EditPosting"
+                    options={{
+                        headerShown: false,
+                    }}>
+                    {props => <EditPosting
+                        {...props}
+                        jwt={this.state.activeJWT}
+                        apiURI={this.state.apiURI}
+                        onLogout={this.onLogout}
+                        idUser={this.state.idUser}
+                        username={this.state.username}
+                    ></EditPosting>}
+                </Stack.Screen>
+                <Stack.Screen
+                    name="DeletePosting"
+                    options={{
+                        headerShown: false,
+                    }}>
+                    {props => <DeletePosting
+                        {...props}
+                        jwt={this.state.activeJWT}
+                        apiURI={this.state.apiURI}
+                        onLogout={this.onLogout}
+                        idUser={this.state.idUser}
+                        username={this.state.username}
+                    ></DeletePosting>}
                 </Stack.Screen>
                 <Stack.Screen
                     name="ActionCompleted"

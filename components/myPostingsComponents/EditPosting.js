@@ -3,7 +3,7 @@ import { Text, View, Button, ScrollView, Picker, TouchableOpacity } from 'react-
 import { TextInput } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker'
 
-export default class CreatePosting extends Component {
+export default class EditPosting extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,6 +17,21 @@ export default class CreatePosting extends Component {
             deliveryType: "shipping",
             sellerInfo: ""
         }
+    }
+
+    componentDidMount() {
+        console.log(this.props.route.params)
+        this.setState({
+            title: this.props.route.params.title,
+            description: this.props.route.params.description,
+            category: this.props.route.params.category,
+            location: this.props.route.params.location,
+            //images: this.props.route.params.images,
+            price: this.props.route.params.price,
+            dateOfPosting: this.props.route.params.dateOfPosting,
+            deliveryType: this.props.route.params.deliveryType,
+            sellerInfo: this.props.route.params.sellerInfo
+        })
     }
 
     openImagePickerAsync = async () => {
@@ -38,8 +53,8 @@ export default class CreatePosting extends Component {
         const fileNameSplit = pickerResult.uri.split('/');
         const fileName = fileNameSplit[fileNameSplit.length - 1];
 
-        let stateImages =  this.state.images;
-        if (stateImages.length>=4) {
+        let stateImages = this.state.images;
+        if (stateImages.length >= 4) {
             alert("You can only select a maximum of 4 images!")
         } else {
             stateImages.push(
@@ -49,7 +64,7 @@ export default class CreatePosting extends Component {
                     type: 'image/jpeg'
                 }
             )
-            this.setState({images: stateImages})
+            this.setState({ images: stateImages })
         }
 
         /* let postForm = new FormData();
@@ -80,10 +95,9 @@ export default class CreatePosting extends Component {
         if (mm < 10) {
             mm = '0' + mm;
         }
-        today = dd+'-'+mm+'-'+yyyy;
+        today = dd + '-' + mm + '-' + yyyy;
 
         let form = new FormData();
-        form.append("idUser", this.props.idUser);
         form.append("title", this.state.title);
         form.append("description", this.state.description);
         form.append("category", this.state.category);
@@ -92,34 +106,34 @@ export default class CreatePosting extends Component {
         form.append("dateOfPosting", today);
         form.append("deliveryType", this.state.deliveryType);
         form.append("sellerInfo", this.state.sellerInfo);
-        this.state.images.map(x=>{
+        this.state.images.map(x => {
             form.append('images', x);
         })
 
-        fetch(this.props.apiURI + '/products', {
-            method: 'POST',
+        fetch(this.props.apiURI + '/products/'+this.props.route.params.id, {
+            method: 'PUT',
             body: form,
             headers: {
-              "Content-type": "multipart/form-data",
-              "Authorization": "Bearer " + this.props.jwt
+                "Content-type": "multipart/form-data",
+                "Authorization": "Bearer " + this.props.jwt
             }
-          })
+        })
             .then(response => {
-              if (response.ok == false) {
-                throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
-              }
-              return response.json();
+                if (response.ok == false) {
+                    throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+                }
+                return response.json();
             })
             .then(json => {
-              console.log(json)
-              this.props.navigation.reset({
-                index: 0,
-                routes: [{ name: 'ActionCompleted' }],
-              })
+                console.log(json)
+                this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'ActionCompleted' }],
+                })
             })
             .catch(error => {
-              console.log("Error message:")
-              console.log(error.message)
+                console.log("Error message:")
+                console.log(error.message)
             });
     }
 
@@ -129,7 +143,7 @@ export default class CreatePosting extends Component {
 
                 <View style={{ flex: 0, flexDirection: "row-reverse", marginTop: 10 }}>
                     <View style={{ flex: 7, alignItems: "center", justifyContent: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Create Posting</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Edit</Text>
                     </View>
                     <View style={{ flex: 3, height: "100%", paddingHorizontal: 20 }}>
                         <Button
@@ -196,7 +210,7 @@ export default class CreatePosting extends Component {
                     <View style={{ flex: 1, flexDirection: "row", marginVertical: 5, marginHorizontal: 5 }}>
                         <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Images</Text>
                         <View style={{ flex: 7, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{marginRight: 10}}>({this.state.images.length})</Text>
+                            <Text style={{ marginRight: 10 }}>({this.state.images.length})</Text>
                             <TouchableOpacity onPress={this.openImagePickerAsync} style={{ borderWidth: 1, borderColor: 'black' }}>
                                 <Text style={{ padding: 5 }}>Pick a photo</Text>
                             </TouchableOpacity>
@@ -251,7 +265,7 @@ export default class CreatePosting extends Component {
 
                     <View style={{ flex: 1, flexDirection: "row", marginVertical: 10, marginHorizontal: 5, justifyContent: "center", alignItems: "center" }}>
                         <Button
-                            title="Create Posting"
+                            title="Edit Posting"
                             onPress={this.submitHandler}
                             style={{ flex: 1 }}
                         />
