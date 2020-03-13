@@ -87,7 +87,7 @@ export default class Postings extends Component {
                                                 height: null,
                                                 resizeMode: 'contain'
                                             }}
-                                            source={{ uri: x }}
+                                            source={{ uri: `${this.props.apiURI}/images/${x}` }}
 
                                         />
                                     )}

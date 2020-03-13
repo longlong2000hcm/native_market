@@ -44,7 +44,7 @@ const SignUpScreen = (props) => {
       <TextInput
         style={styles.input}
         value={username}
-        placeholder="johndoe"
+        placeholder="username"
         onChangeText={value => setUsername(value)}
       />
       <Text>Please enter your password</Text>

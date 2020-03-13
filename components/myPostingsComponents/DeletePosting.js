@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Button, ScrollView, Picker, TouchableOpacity } from 'react-native'
+import { Text, View, Button, ScrollView, Picker, TouchableOpacity, Image } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker'
 
@@ -26,7 +26,7 @@ export default class EditPosting extends Component {
             description: this.props.route.params.description,
             category: this.props.route.params.category,
             location: this.props.route.params.location,
-            //images: this.props.route.params.images,
+            images: this.props.route.params.images,
             price: this.props.route.params.price,
             dateOfPosting: this.props.route.params.dateOfPosting,
             deliveryType: this.props.route.params.deliveryType,
@@ -107,7 +107,7 @@ export default class EditPosting extends Component {
                                             height: null,
                                             resizeMode: 'contain'
                                         }}
-                                        source={{ uri: x }}
+                                        source={{ uri: `${this.props.apiURI}/images/${x}` }}
 
                                     />
                                 )}

@@ -5,8 +5,8 @@ import { Base64 } from 'js-base64'
 
 
 const LoginScreen = (props) => {
-  const [userName, setUserName] = useState("tester");
-  const [password, setPassword] = useState("testerpassword");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
   function loginClick() {
     let form = new FormData();
@@ -48,7 +48,7 @@ const LoginScreen = (props) => {
       <TextInput
         style={ styles.input }
         value={ userName }
-        placeholder="johndoe"
+        placeholder="username"
         onChangeText={ value => setUserName(value)}
       />
       <Text style={ styles.text }>Password</Text>

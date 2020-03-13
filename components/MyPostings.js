@@ -22,7 +22,7 @@ export default class AuthDemo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            apiURI: "http://87.92.86.121:3000",
+            apiURI: this.props.apiURI,
             isCheckingTokenStorage: true,
             activeJWT: null,
             idUser: null,

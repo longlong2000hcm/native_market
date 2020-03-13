@@ -1,45 +1,16 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, TextInput, View, Image, ScrollView, Picker } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, ScrollView, Picker, RefreshControl } from 'react-native';
 
 
 export default class Shop extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            apiURI: "http://87.92.86.121:3000",
+            apiURI: this.props.apiURI,
             searchText: "",
             searchBy: "",
-            productsList: [
-                {
-                    "id": 1,
-                    "title": "bike 1",
-                    "description": "for cycling",
-                    "category": "machine",
-                    "location": "Oulu",
-                    "images": [
-                        "https://cdn.shopify.com/s/files/1/2081/1519/products/1600x1067_US_B_Blue_PROFILE_1600x1067.jpg?v=1573931859"
-                        , "https://www.rosebikes.fi/images/v7PsIuvrqBrm6SfrEscV6HwbKiS_T5yjnFBa05QXZ80/resize:fit:1800:1200:1/gravity:no/background:E5E8EB/bG9jYWw6Ly8vcHJvZHVjdC8yMjc2Mjk2XzEucG5n.jpeg"
-                    ],
-                    "price": "100$",
-                    "dateOfPosting": "23/2/2020",
-                    "deliveryType": "shipping",
-                    "sellerInfo": "sellerInfo1"
-                },
-                {
-                    "id": 2,
-                    "title": "bike 2",
-                    "description": "for cycling",
-                    "category": "machine",
-                    "location": "Oulu",
-                    "images": [
-                        "https://www.rosebikes.fi/images/v7PsIuvrqBrm6SfrEscV6HwbKiS_T5yjnFBa05QXZ80/resize:fit:1800:1200:1/gravity:no/background:E5E8EB/bG9jYWw6Ly8vcHJvZHVjdC8yMjc2Mjk2XzEucG5n.jpeg"
-                    ],
-                    "price": "200$",
-                    "dateOfPosting": "23/2/2020",
-                    "deliveryType": "shipping",
-                    "sellerInfo": "sellerInfo1"
-                }
-            ]
+            productsList: [],
+            refreshing: false
         }
     }
 
@@ -94,7 +65,22 @@ export default class Shop extends Component {
                     this.setState({ productsList: result.data })
                 })
         }
-
+    }
+    _onRefresh = () => {
+        this.setState({ refreshing: true });
+        fetch(this.state.apiURI + '/products', {
+            method: 'GET',
+        })
+            .then(response => {
+                if (response.ok == false) {
+                    throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+                }
+                console.log(response.json);
+                return response.json();
+            })
+            .then(result => {
+                this.setState({ productsList: result.data, refreshing: false, searchText: "",searchBy: "" })
+            })
     }
     render() {
         return (
@@ -125,7 +111,15 @@ export default class Shop extends Component {
                     </Picker>
                 </View>
 
-                <ScrollView style={{ flex: 9, width: "100%" }}>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
+                        />
+                    }
+                    style={{ flex: 9, width: "100%" }}
+                >
                     {this.state.productsList.map((item, index) =>
                         <View key={index} style={{
                             flex: 1,
@@ -134,7 +128,7 @@ export default class Shop extends Component {
                             padding: "5%",
                             borderColor: "gray",
                             borderWidth: 1,
-                            backgroundColor: "white",
+                            backgroundColor: "white"
                         }}>
                             <View style={{ flex: 4, paddingRight: 10 }}>
                                 {item.images.map((x, i) =>
@@ -147,7 +141,7 @@ export default class Shop extends Component {
                                             height: null,
                                             resizeMode: 'contain'
                                         }}
-                                        source={{ uri: x }}
+                                        source={{ uri: `${this.props.apiURI}/images/${x}` }}
 
                                     />
                                 )}

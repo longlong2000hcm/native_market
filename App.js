@@ -7,6 +7,7 @@ import Shop from './components/Shop'
 import MyPostings from './components/MyPostings'
 
 const Tab = createBottomTabNavigator();
+const apiURI = "https://native-market-server.herokuapp.com";
 
 export default function App() {
   return (
@@ -18,16 +19,18 @@ export default function App() {
           tabBarIcon: ({ color, size }) => (
             <Entypo name="shop" color={color} size={size} />)
         }}
-        component={Shop} 
-        />
+        >
+          {props=><Shop {...props} apiURI={apiURI}></Shop>}
+        </Tab.Screen>
         <Tab.Screen 
         name="My Postings" 
         options={{
           tabBarIcon: ({ color, size }) => (
             <Entypo name="home" color={color} size={size} />)
         }}
-        component={MyPostings} 
-        />
+        >
+        {props=><MyPostings {...props} apiURI={apiURI}></MyPostings>}
+        </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );
