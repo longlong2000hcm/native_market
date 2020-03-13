@@ -10,6 +10,7 @@ import * as SecureStore from 'expo-secure-store'
 import LoadingScreen from './myPostingsComponents/LoadingScreen'
 import Postings from './myPostingsComponents/Postings'
 import CreatePosting from './myPostingsComponents/CreatePosting'
+import ActionCompleted from './myPostingsComponents/ActionCompleted'
 
 const Stack = createStackNavigator();
 const secureStoreTokenName = "NativeMarket";
@@ -32,7 +33,14 @@ export default class AuthDemo extends Component {
         SecureStore.getItemAsync(secureStoreTokenName)
             .then(response => {
                 console.log("SecureStore.getItemAsync success")
-                this.setState({ activeJWT: response, isCheckingTokenStorage: false })
+                if (response!==null) {
+                    response = response.split("____");
+                    console.log({ activeJWT: response[0], idUser: response[1], username: response[2],  isCheckingTokenStorage: false })
+                    this.setState({ activeJWT: response[0], idUser: response[1], username: response[2],  isCheckingTokenStorage: false })
+                }
+                else {
+                    this.setState({ activeJWT: response,  isCheckingTokenStorage: false })
+                }
             })
             .catch(error => {
                 console.log("SecureStore.getItemAsync error")
@@ -43,10 +51,10 @@ export default class AuthDemo extends Component {
 
     onLoginReceiveJWT = (responseJWT, idUser, username) => {
         // Deal with successful login by storing the token into secure store
-        SecureStore.setItemAsync(secureStoreTokenName, responseJWT)
+        SecureStore.setItemAsync(secureStoreTokenName, responseJWT+"____"+idUser+"____"+username)
             .then(response => {
                 console.log(response);
-                this.setState({ activeJWT: responseJWT, isCheckingTokenStorage: false, idUser: idUser, username: username })
+                this.setState({ activeJWT: responseJWT, isCheckingTokenStorage: false, idUser, username})
             })
     }
 
@@ -111,6 +119,14 @@ export default class AuthDemo extends Component {
                         idUser={this.state.idUser}
                         username={this.state.username}
                     ></CreatePosting>}
+                </Stack.Screen>
+                <Stack.Screen
+                    name="ActionCompleted"
+                    options={{
+                        headerShown: false,
+                    }}
+                >
+                    {props => <ActionCompleted {...props}></ActionCompleted>}
                 </Stack.Screen>
             </>
         )

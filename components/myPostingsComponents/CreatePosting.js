@@ -82,8 +82,8 @@ export default class CreatePosting extends Component {
         }
         today = dd+'-'+mm+'-'+yyyy;
 
-        console.log(this.state)
         let form = new FormData();
+        form.append("idUser", this.props.idUser);
         form.append("title", this.state.title);
         form.append("description", this.state.description);
         form.append("category", this.state.category);
@@ -95,7 +95,8 @@ export default class CreatePosting extends Component {
         this.state.images.map(x=>{
             form.append('images', x);
         })
-        fetch(props.apiURI + '/products', {
+
+        fetch(this.props.apiURI + '/products', {
             method: 'POST',
             body: form,
             headers: {
@@ -111,9 +112,9 @@ export default class CreatePosting extends Component {
             })
             .then(json => {
               console.log(json)
-              props.navigation.reset({
+              this.props.navigation.reset({
                 index: 0,
-                routes: [{ name: 'SignupCompleted' }],
+                routes: [{ name: 'ActionCompleted' }],
               })
             })
             .catch(error => {

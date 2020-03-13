@@ -29,7 +29,7 @@ const LoginScreen = (props) => {
       console.log("Login successful")
       console.log("Received following JSON");
       console.log(json);
-      props.onLoginReceiveJWT(json.token, idUser, username);
+      props.onLoginReceiveJWT(json.token, json.idUser, json.username);
     })
     .catch(error => {
       console.log("Error message:")
