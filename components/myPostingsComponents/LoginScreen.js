@@ -20,6 +20,10 @@ const LoginScreen = (props) => {
       body: form
     })
     .then(response => {
+      if (response.status==401) {
+        console.log(response.json())
+        alert("Wrong username or password")
+      }
       if (response.ok == false) {
         throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
       }

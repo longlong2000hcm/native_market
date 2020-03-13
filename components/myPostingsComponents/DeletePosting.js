@@ -34,85 +34,11 @@ export default class EditPosting extends Component {
         })
     }
 
-    openImagePickerAsync = async () => {
-        let permissionResult = true;//await ImagePicker.requestCameraRollPermissionsAsync();
 
-        if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
-            return;
-        }
-
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
-        console.log(pickerResult);
-
-        if (pickerResult.cancelled == true) {
-            alert('Image picker cancelled or failed');
-            return;
-        }
-
-        const fileNameSplit = pickerResult.uri.split('/');
-        const fileName = fileNameSplit[fileNameSplit.length - 1];
-
-        let stateImages = this.state.images;
-        if (stateImages.length >= 4) {
-            alert("You can only select a maximum of 4 images!")
-        } else {
-            stateImages.push(
-                {
-                    uri: pickerResult.uri,
-                    name: fileName,
-                    type: 'image/jpeg'
-                }
-            )
-            this.setState({ images: stateImages })
-        }
-
-        /* let postForm = new FormData();
-        postForm.append('myFiles', {
-            uri: pickerResult.uri,
-            name: fileName,
-            type: 'image/jpeg'
-        });
-        postForm.append('foo', 'bar');
-
-        console.log(postForm); */
-
-    }
-
-    inputHandler = (text, name) => {
-        this.setState({ [name]: text })
-    }
 
     submitHandler = () => {
-        //Get date in format dd-mm-yyyy
-        let today = new Date();
-        let dd = today.getDate();
-        let mm = today.getMonth() + 1;
-        let yyyy = today.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd;
-        }
-        if (mm < 10) {
-            mm = '0' + mm;
-        }
-        today = dd + '-' + mm + '-' + yyyy;
-
-        let form = new FormData();
-        form.append("title", this.state.title);
-        form.append("description", this.state.description);
-        form.append("category", this.state.category);
-        form.append("location", this.state.location);
-        form.append("price", this.state.price);
-        form.append("dateOfPosting", today);
-        form.append("deliveryType", this.state.deliveryType);
-        form.append("sellerInfo", this.state.sellerInfo);
-        this.state.images.map(x => {
-            form.append('images', x);
-        })
-
-        fetch(this.props.apiURI + '/products/'+this.props.route.params.id, {
-            method: 'PUT',
-            body: form,
+        fetch(this.props.apiURI + '/products/' + this.props.route.params.id, {
+            method: 'DELETE',
             headers: {
                 "Content-type": "multipart/form-data",
                 "Authorization": "Bearer " + this.props.jwt
@@ -143,7 +69,7 @@ export default class EditPosting extends Component {
 
                 <View style={{ flex: 0, flexDirection: "row-reverse", marginTop: 10 }}>
                     <View style={{ flex: 7, alignItems: "center", justifyContent: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Edit</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Delete</Text>
                     </View>
                     <View style={{ flex: 3, height: "100%", paddingHorizontal: 20 }}>
                         <Button
@@ -153,126 +79,66 @@ export default class EditPosting extends Component {
                         />
                     </View>
                 </View>
-                <ScrollView style={{ flex: 9, width: "100%", marginTop: 10 }}>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Text>Are you sure to delete this product?</Text>
+                </View>
 
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Title</Text>
-                        <TextInput
-                            onChangeText={text => this.inputHandler(text, "title")}
-                            value={this.state.title}
-                            placeholder="Title"
-                            style={{
-                                flex: 7, height: 40, borderColor: 'gray',
-                                borderWidth: 1, width: "100%", backgroundColor: "white",
-                                paddingHorizontal: "5%"
-                            }} />
-                    </View>
+                <View style={{
+                    flex: 6, margin: "5%",
+                    padding: "5%",
+                    width: "100%",
+                    borderColor: "gray",
+                    borderWidth: 1,
+                    backgroundColor: "white",
+                }}>
+                    <ScrollView style={{ flex: 1 }}>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: "row",
+                        }}>
+                            <View style={{ flex: 4, paddingRight: 10 }}>
+                                {this.state.images.map((x, i) =>
+                                    <Image
+                                        key={i}
+                                        style={{
+                                            flex: 1,
+                                            marginTop: 5,
+                                            width: null,
+                                            height: null,
+                                            resizeMode: 'contain'
+                                        }}
+                                        source={{ uri: x }}
 
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Description</Text>
-                        <TextInput
-                            onChangeText={text => this.inputHandler(text, "description")}
-                            value={this.state.description}
-                            placeholder="Description"
-                            style={{
-                                flex: 7, height: 40, borderColor: 'gray',
-                                borderWidth: 1, width: "100%", backgroundColor: "white",
-                                paddingHorizontal: "5%"
-                            }} />
-                    </View>
+                                    />
+                                )}
+                            </View>
 
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Category</Text>
-                        <TextInput
-                            onChangeText={text => this.inputHandler(text, "category")}
-                            value={this.state.category}
-                            placeholder="Category"
-                            style={{
-                                flex: 7, height: 40, borderColor: 'gray',
-                                borderWidth: 1, width: "100%", backgroundColor: "white",
-                                paddingHorizontal: "5%"
-                            }} />
-                    </View>
+                            <View style={{ flex: 6 }}>
+                                <Text>Id: {this.state.id}</Text>
+                                <Text>Tittle: {this.state.title}</Text>
+                                <Text>Price: {this.state.price}</Text>
+                                <Text>Category: {this.state.category}</Text>
+                                <Text>Location: {this.state.location}</Text>
+                                <Text>Date of posting: {this.state.dateOfPosting}</Text>
+                                <Text>Delivery type: {this.state.deliveryType}</Text>
+                                <Text>Description: {this.state.description}</Text>
+                                <Text>Seller info: {this.state.sellerInfo}</Text>
 
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Location</Text>
-                        <TextInput
-                            onChangeText={text => this.inputHandler(text, "location")}
-                            value={this.state.location}
-                            placeholder="Location"
-                            style={{
-                                flex: 7, height: 40, borderColor: 'gray',
-                                borderWidth: 1, width: "100%", backgroundColor: "white",
-                                paddingHorizontal: "5%"
-                            }} />
-                    </View>
-
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 5, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Images</Text>
-                        <View style={{ flex: 7, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ marginRight: 10 }}>({this.state.images.length})</Text>
-                            <TouchableOpacity onPress={this.openImagePickerAsync} style={{ borderWidth: 1, borderColor: 'black' }}>
-                                <Text style={{ padding: 5 }}>Pick a photo</Text>
-                            </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
-
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Price</Text>
-                        <TextInput
-                            onChangeText={text => this.inputHandler(text, "price")}
-                            value={this.state.price}
-                            placeholder="Price"
-                            style={{
-                                flex: 5, height: 40, borderColor: 'gray',
-                                borderWidth: 1, width: "100%", backgroundColor: "white",
-                                paddingHorizontal: "5%"
-                            }}
-                            keyboardType={'numeric'} />
-                        <Text style={{ flex: 2, textAlignVertical: 'center', textAlign: "center" }}>euro</Text>
-                    </View>
-
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Delivery type</Text>
-                        <Picker
-                            selectedValue={this.state.deliveryType}
-                            style={{ flex: 7, height: 50, width: 100 }}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({ deliveryType: itemValue })
-                            }>
-                            <Picker.Item label="Shipping" value="shipping" />
-                            <Picker.Item label="Pickup" value="pickup" />
-                        </Picker>
-                    </View>
-
-
-
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 3, marginHorizontal: 5 }}>
-                        <Text style={{ flex: 3, textAlignVertical: 'center', textAlign: "center" }}>Seller info</Text>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={4}
-                            onChangeText={text => this.inputHandler(text, "sellerInfo")}
-                            value={this.state.sellerInfo}
-                            placeholder="Seller info"
-                            style={{
-                                flex: 7, height: 40, borderColor: 'gray',
-                                borderWidth: 1, width: "100%", backgroundColor: "white",
-                                paddingHorizontal: "5%",
-                                height: 100
-                            }} />
-                    </View>
-
-                    <View style={{ flex: 1, flexDirection: "row", marginVertical: 10, marginHorizontal: 5, justifyContent: "center", alignItems: "center" }}>
-                        <Button
-                            title="Edit Posting"
-                            onPress={this.submitHandler}
-                            style={{ flex: 1 }}
-                        />
-                    </View>
-
-                </ScrollView>
+                    </ScrollView>
+                </View>
+                <View style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
+                    <TouchableOpacity
+                        style={{ backgroundColor: "red", padding: 10, borderRadius: 3, width: 100 }}
+                        onPress={this.submitHandler}
+                    >
+                        <Text style={{ color: "white", textAlign: "center" }}>Delete</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
+
+
         )
     }
 }

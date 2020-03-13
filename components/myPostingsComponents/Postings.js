@@ -5,37 +5,7 @@ export default class Postings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            productsList: [
-                {
-                    "id": 1,
-                    "title": "bike 1",
-                    "description": "for cycling",
-                    "category": "machine",
-                    "location": "Oulu",
-                    "images": [
-                        "https://cdn.shopify.com/s/files/1/2081/1519/products/1600x1067_US_B_Blue_PROFILE_1600x1067.jpg?v=1573931859"
-                        , "https://www.rosebikes.fi/images/v7PsIuvrqBrm6SfrEscV6HwbKiS_T5yjnFBa05QXZ80/resize:fit:1800:1200:1/gravity:no/background:E5E8EB/bG9jYWw6Ly8vcHJvZHVjdC8yMjc2Mjk2XzEucG5n.jpeg"
-                    ],
-                    "price": "100$",
-                    "dateOfPosting": "23/2/2020",
-                    "deliveryType": "shipping",
-                    "sellerInfo": "sellerInfo1"
-                },
-                {
-                    "id": 2,
-                    "title": "bike 2",
-                    "description": "for cycling",
-                    "category": "machine",
-                    "location": "Oulu",
-                    "images": [
-                        "https://www.rosebikes.fi/images/v7PsIuvrqBrm6SfrEscV6HwbKiS_T5yjnFBa05QXZ80/resize:fit:1800:1200:1/gravity:no/background:E5E8EB/bG9jYWw6Ly8vcHJvZHVjdC8yMjc2Mjk2XzEucG5n.jpeg"
-                    ],
-                    "price": "200$",
-                    "dateOfPosting": "23/2/2020",
-                    "deliveryType": "shipping",
-                    "sellerInfo": "sellerInfo1"
-                }
-            ]
+            productsList: []
         }
     }
     componentDidMount() {
@@ -97,7 +67,9 @@ export default class Postings extends Component {
                                 style={{flex: 1}}
                                 />
                                 
-                                <Button title="Delete" style={{flex: 1}} ></Button>
+                                <Button title="Delete" 
+                                onPress={() => this.props.navigation.navigate('DeletePosting', {...item})}
+                                style={{flex: 1}} ></Button>
                             </View>
                             <View style={{
                                 flex: 1,
