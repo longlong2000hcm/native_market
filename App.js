@@ -7,8 +7,8 @@ import Shop from './components/Shop'
 import MyPostings from './components/MyPostings'
 
 const Tab = createBottomTabNavigator();
-//const apiURI = "https://native-market-server.herokuapp.com";
-const apiURI = "https://87.92.86.121:3000";
+const apiURI = "https://native-market-server.herokuapp.com";
+//const apiURI = "https://87.92.86.121:3000";
 
 export default function App() {
   return (

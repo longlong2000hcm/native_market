@@ -137,9 +137,10 @@ export default class Shop extends Component {
                                         style={{
                                             flex: 1,
                                             marginTop: 5,
-                                            width: null,
-                                            height: null,
-                                            resizeMode: 'contain'
+                                            width: "100%",
+                                            height: 100,
+                                            resizeMode: 'contain',
+                                            zIndex: 100
                                         }}
                                         source={{ uri: `${this.props.apiURI}/images/${x}` }}
 
@@ -150,7 +151,7 @@ export default class Shop extends Component {
                             <View style={{ flex: 6 }}>
                                 <Text>Id: {item.id}</Text>
                                 <Text>Tittle: {item.title}</Text>
-                                <Text>Price: {item.price}</Text>
+                                <Text>Price: {item.price} {'\u20AC'}</Text>
                                 <Text>Category: {item.category}</Text>
                                 <Text>Location: {item.location}</Text>
                                 <Text>Date of posting: {item.dateOfPosting}</Text>

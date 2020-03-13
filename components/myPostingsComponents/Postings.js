@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, Button, ScrollView, Image } from 'react-native'
+import { EvilIcons } from 'react-native-vector-icons';
 
 export default class Postings extends Component {
     constructor(props) {
@@ -28,7 +29,10 @@ export default class Postings extends Component {
             <View style={{ flex: 1, alignItems: 'center', marginTop: "10%" }}>
                 <View style={{ flex: 0, flexDirection: "row" }}>
                     <View style={{ flex: 7, alignItems: "center", justifyContent: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>My Postings</Text>
+                        <Text style={{ fontWeight: "100", fontSize: 20 }}>
+                            <EvilIcons name="user" color="black" size={25} />
+                            {this.props.username}
+                        </Text>
                     </View>
                     <View style={{ flex: 3, height: "100%", paddingHorizontal: 20 }}>
                         <Button
@@ -41,7 +45,9 @@ export default class Postings extends Component {
                 </View>
 
                 <View style={{ flex: 0, flexDirection: "row", marginTop: 10 }}>
-                    <View style={{ flex: 6, alignItems: "center", justifyContent: "center" }}></View>
+                    <View style={{ flex: 6, alignItems: "center", justifyContent: "center" }}>
+                        <Text style={{ fontWeight: "100", fontSize: 20 }}>My Postings</Text>
+                    </View>
                     <View style={{ flex: 4, height: "100%", paddingHorizontal: 20 }}>
                         <Button
                             title="Create Posting"
@@ -49,7 +55,6 @@ export default class Postings extends Component {
                             style={{ flex: 1 }}
                         />
                     </View>
-
                 </View>
 
                 <ScrollView style={{ flex: 9, width: "100%", marginTop: 10 }}>
@@ -61,15 +66,15 @@ export default class Postings extends Component {
                             borderWidth: 1,
                             backgroundColor: "white",
                         }}>
-                            <View style={{flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", marginBottom: 5}}>
-                                <Button title="Edit" 
-                                onPress={() => this.props.navigation.navigate('EditPosting', {...item})}
-                                style={{flex: 1}}
+                            <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-evenly", marginBottom: 5 }}>
+                                <Button title="Edit"
+                                    onPress={() => this.props.navigation.navigate('EditPosting', { ...item })}
+                                    style={{ flex: 1 }}
                                 />
-                                
-                                <Button title="Delete" 
-                                onPress={() => this.props.navigation.navigate('DeletePosting', {...item})}
-                                style={{flex: 1}} ></Button>
+
+                                <Button title="Delete"
+                                    onPress={() => this.props.navigation.navigate('DeletePosting', { ...item })}
+                                    style={{ flex: 1 }} ></Button>
                             </View>
                             <View style={{
                                 flex: 1,
@@ -83,8 +88,8 @@ export default class Postings extends Component {
                                             style={{
                                                 flex: 1,
                                                 marginTop: 5,
-                                                width: null,
-                                                height: null,
+                                                width: "100%",
+                                                height: 100,
                                                 resizeMode: 'contain'
                                             }}
                                             source={{ uri: `${this.props.apiURI}/images/${x}` }}
@@ -96,7 +101,7 @@ export default class Postings extends Component {
                                 <View style={{ flex: 6 }}>
                                     <Text>Id: {item.id}</Text>
                                     <Text>Tittle: {item.title}</Text>
-                                    <Text>Price: {item.price}</Text>
+                                    <Text>Price: {item.price} {'\u20AC'}</Text>
                                     <Text>Category: {item.category}</Text>
                                     <Text>Location: {item.location}</Text>
                                     <Text>Date of posting: {item.dateOfPosting}</Text>

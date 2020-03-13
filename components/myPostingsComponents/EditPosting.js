@@ -143,7 +143,7 @@ export default class EditPosting extends Component {
 
                 <View style={{ flex: 0, flexDirection: "row-reverse", marginTop: 10 }}>
                     <View style={{ flex: 7, alignItems: "center", justifyContent: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>Edit</Text>
+                        <Text style={{ fontWeight: "100", fontSize: 20 }}>Edit</Text>
                     </View>
                     <View style={{ flex: 3, height: "100%", paddingHorizontal: 20 }}>
                         <Button
