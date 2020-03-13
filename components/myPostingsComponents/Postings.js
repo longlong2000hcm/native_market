@@ -38,6 +38,21 @@ export default class Postings extends Component {
             ]
         }
     }
+    componentDidMount() {
+        fetch(this.props.apiURI + '/products/getByIdUser/' + this.props.idUser, {
+            method: 'GET',
+        })
+            .then(response => {
+                if (response.ok == false) {
+                    throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+                }
+                console.log(response.json);
+                return response.json();
+            })
+            .then(result => {
+                this.setState({ productsList: result.data })
+            })
+    }
     render() {
         return (
             <View style={{ flex: 1, alignItems: 'center', marginTop: "10%" }}>
