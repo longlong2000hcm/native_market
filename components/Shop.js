@@ -6,6 +6,7 @@ export default class Shop extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            apiURI: "http://87.92.86.121:3000",
             searchText: "",
             searchBy: "",
             productsList: [
@@ -41,12 +42,59 @@ export default class Shop extends Component {
             ]
         }
     }
+
+    componentDidMount() {
+        fetch(this.state.apiURI + '/products', {
+            method: 'GET',
+        })
+            .then(response => {
+                if (response.ok == false) {
+                    throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+                }
+                console.log(response.json);
+                return response.json();
+            })
+            .then(result => {
+                this.setState({ productsList: result.data })
+            })
+    }
+
     handleSearchTextChange = (text) => {
         this.setState({ searchText: text })
     }
     search = (event) => {
-        let text = event.nativeEvent.text;
-        console.log(text);
+        let text = this.state.searchText;
+        if (text !== "" && this.state.searchBy !== "") {
+            fetch(this.state.apiURI + '/search/' + this.state.searchBy + '/' + text, {
+                method: 'GET',
+            })
+                .then(response => {
+                    if (response.ok == false) {
+                        throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+                    }
+                    console.log(response.json);
+                    return response.json();
+                })
+                .then(result => {
+                    this.setState({ productsList: result.data })
+                })
+        }
+        else {
+            fetch(this.state.apiURI + '/products', {
+                method: 'GET',
+            })
+                .then(response => {
+                    if (response.ok == false) {
+                        throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+                    }
+                    console.log(response.json);
+                    return response.json();
+                })
+                .then(result => {
+                    this.setState({ productsList: result.data })
+                })
+        }
+
     }
     render() {
         return (
@@ -59,15 +107,16 @@ export default class Shop extends Component {
                             paddingHorizontal: "5%"
                         }}
                         onChangeText={text => this.handleSearchTextChange(text)}
-                        onSubmitEditing={text=>this.search(text)}
+                        onSubmitEditing={text => this.search(text)}
                         value={this.state.searchText}
                         placeholder="Search..."
                     />
                     <Picker
                         selectedValue={this.state.searchBy}
                         style={{ flex: 9, height: 50, width: 100 }}
-                        onValueChange={(itemValue, itemIndex) =>
-                            this.setState({ searchBy: itemValue })
+                        onValueChange={(itemValue, itemIndex) => {
+                            this.setState({ searchBy: itemValue });
+                        }
                         }>
                         <Picker.Item label="by" value="" />
                         <Picker.Item label="Category" value="category" />
